@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--id属性：名字（唯一）
+        class：配置全限定名-->
+<!--
+    <bean id="person" class="com.spring.Person">
+        <property name="name">
+            <value>zhangsan</value>
+        </property>
+        <property name="age">
+            <value>20</value>
+        </property>
+        <property name="emails">
+            <list>
+                <value>zhangyu@11.com</value>
+                <value>ssss@11.com</value>
+            </list>
+        </property>
+        <property name="tels">
+            <set>
+                <value>12354</value>
+                <value>87546</value>
+                <value>12421</value>
+                <value>12421</value>
+            </set>
+        </property>
+        <property name="addres">
+            <list>
+                <value>重庆市巫溪县</value>
+                <value>重庆市万州区</value>
+            </list>
+        </property>
+        <property name="map">
+            <map>
+               <entry>
+                   <key><value>key</value></key>
+                   <value>value</value>
+               </entry>
+                <entry>
+                    <key><set><value>setket</value></set></key>
+                    <set><value>setvalue</value></set>
+                </entry>
+            </map>
+        </property>
+        <property name="properties">
+            <props>
+                <prop key="pKey1">pValue1</prop>
+                <prop key="pKey2">pValue2</prop>
+            </props>
+        </property>
+    </bean>
+-->
+
+    <bean id="user" class="com.spring.User">
+        <constructor-arg index="0" value="aa"/>
+        <constructor-arg index="1" value="1"/>
+    </bean>
+    <bean id="user1" name="uu" class="com.spring.User">
+        <constructor-arg index="0" value="q"/>
+        <constructor-arg index="1" value="2"/>
+    </bean>
+
+    <bean id="userService" class="com.spring.UserServiceImpl">
+        <property name="userDao">
+            <bean class="com.spring.UserDaoImpl"></bean>
+        </property>
+    </bean>
+    <bean id="userDao" class="com.spring.UserDaoImpl"/>
+
+<!--    <bean id="userService1" class="com.spring.UserServiceImpl">-->
+<!--        <property name="userDao">-->
+<!--            <ref bean="userDao"/>-->
+<!--        </property>-->
+<!--    </bean>-->
+<!--    简化版本：-->
+    <bean id="userService1" class="com.spring.UserServiceImpl">
+        <property name="userDao" ref="userDao"/>
+    </bean>
+
+    <bean id="person" class="com.spring.Person" p:name="zhangs" p:age="11"/>
+
+    <bean id="customer" class="com.spring.constructor.Customer">
+        <constructor-arg index="0" value="zhangs"/>
+       <!-- <constructor-arg index="1" value="1"/>-->
+    </bean>
+
+    <bean id="customer1" class="com.spring.constructor.Customer">
+        <constructor-arg type="java.lang.Integer">
+            <value>13</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="customer2" class="com.spring.constructor.Customer">
+        <constructor-arg type="java.lang.String">
+            <value>zhangs</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="conn" class="com.factorybean.ConnectionFactoryBean">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/test"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+    </bean>
+    <!--实例工厂需要额外配置factory-bean的原因是：调用实例类的方法需要新建实例化对象后，才能调用该类的方法-->
+    <bean id="connFactory" class="com.factorybean.ConnectionFactory"/>
+    <bean id="conn1" factory-bean="connFactory" factory-method="getConnection"/>
+    <!--静态工厂只需要配置class属性的原因是：调用静态类的方法不需要new，直接调用即可-->
+    <bean id="conn2" class="com.factorybean.StaticConnectionFactory" factory-method="getConnection"/>
+
+    <bean id="account" class="com.scope.Account" scope="singleton"/>
+    <bean id="account1" class="com.scope.Account" scope="prototype"/>
+
+    <bean id="product" class="com.life.Product" lazy-init="true"/>
+
+    <bean id="product1" class="com.life.Product" />
+</beans>
